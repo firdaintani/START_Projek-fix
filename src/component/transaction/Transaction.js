@@ -1,84 +1,179 @@
 import React from 'react'
-import Currency from 'react-currency-formatter';
-import {Link} from 'react-router-dom'
-import cookie from 'universal-cookie'
-import PageNotFound from '../PageNotFound';
-import {withRouter} from 'react-router-dom'
+import { MDBDataTable } from 'mdbreact';
+import { Link } from 'react-router-dom'
+import Currency from 'react-currency-formatter'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
-const objCookie = new cookie()
 class Transaction extends React.Component {
-    state = { transaction: [] }
-    
-    componentDidMount() {
-        this.setState({transaction : this.props.data})
-    
-    }
+    state = {
+        searchKey: '',
+        data: {
+            columns: this.props.role==='admin' ?
+            [
+                {
+                    label: 'No',
+                    field: 'no',
+                    sort: 'asc',
+                    width: 100
+                },
+
+                {
+                    label: 'Order ID',
+                    field: 'id',
+                    sort: 'asc',
+                    width: 100
+                },
+                {
+                    label: 'Username',
+                    field: 'username',
+                    sort: 'asc',
+                    width: 100
+                },
+
+                {
+                    label: 'Order Date',
+                    field: 'order_date',
+                    sort: 'asc',
+                    width: 300
+                },
+                {
+                    label: 'Payment Due',
+                    field: 'payment_due',
+                    sort: 'asc',
+                    width: 300
+                },
 
 
+                {
+                    label: 'Total',
+                    field: 'total',
+                    sort: 'asc',
+                    width: 300
+                },
+                {
+                    label: 'Detail',
+                    field: 'detail',
+                    sort: 'disabled',
+                    width: 20
+                }
+            ] :
+            [
+                {
+                    label: 'No',
+                    field: 'no',
+                    sort: 'asc',
+                    width: 100
+                },
 
-    componentWillReceiveProps(newProps) {
-            this.setState({transaction : newProps.data})
-        
-    }
+                {
+                    label: 'Order ID',
+                    field: 'id',
+                    sort: 'asc',
+                    width: 100
+                },
+                {
+                    label: 'Order Date',
+                    field: 'order_date',
+                    sort: 'asc',
+                    width: 300
+                },
+                {
+                    label: 'Payment Due',
+                    field: 'payment_due',
+                    sort: 'asc',
+                    width: 300
+                },
 
-    
-    renderTransaction = () => {
-        var data = this.state.transaction.map((val) => {
-           
-            return (
-                <tr>
-                    <td>{val.id}</td>
-                    <td>{val.order_date}</td>
-                    <td><Currency quantity={val.total} currency="IDR"/></td>
-                    <td>{val.payment_due}</td>
-                  <Link to={'/transaction-detail/'+val.id}><td><input type='button' className='tombol' value='DETAIL' /></td></Link>  
-               
-               
-             </tr>
-            )
-        })
-        return data
-    }
-    render() {
-        if(objCookie.get('username')===undefined){
-            return <PageNotFound/>
+
+                {
+                    label: 'Total',
+                    field: 'total',
+                    sort: 'asc',
+                    width: 300
+                },
+                {
+                    label: 'Detail',
+                    field: 'detail',
+                    sort: 'disabled',
+                    width: 20
+                }
+            ],
+            rows: []
         }
+    }
+
+
+    componentDidMount() {
+
+        this.mapData(this.props.data)
+    }
+    componentWillReceiveProps(newProps) {
+        this.mapData(newProps.data)
+    }
+
+    mapData = (data) => {
+        var newData = { ...this.state.data }
+        var dataBr = data.map((val, index) => {
+            if(this.props.role==='admin'){
+                return {
+                    no : index+1,
+                    id: val.id,
+                    username: val.username,
+                    order_date: `${val.order_date}`,
+                    payment_due: `${val.payment_due}`,
+                    total: <Currency quantity={val.total} currency="IDR" />,
+                    detail: <Link to={'/transaction-detail/' + val.id}><input type='button' value='detail' className='btn btn-success' /></Link>
+    
+                }
+    
+            }
+            return {
+                no : index+1,
+                id: val.id,
+                order_date: `${val.order_date}`,
+                payment_due: `${val.payment_due}`,
+                total: <Currency quantity={val.total} currency="IDR" />,
+                detail: <Link to={'/transaction-detail/' + val.id}><input type='button' value='detail' className='btn btn-success' /></Link>
+
+            }
+        })
+        newData.rows = dataBr
+        this.setState({ data: newData })
+
+    }
+
+    render() {
+       
         return (
-            <div className="container font" style={{ marginTop: '20px' }}>
-               {
-                   this.state.transaction.length>0 ? 
-                   <center>
+            <div className="container" style={{ marginTop: '20px' }}>
+                {
+                    this.state.data.rows.length === 0 ?
+                        <h4>Transaction Empty</h4> :
+                        <div>
 
-                   <table className='table'>
 
-                       <thead style={{ textAlign: 'center' }}>
-                        <tr>
-                           <th>Order ID</th>
-                          
-                           <th>Order Date</th>
-                           
-                           <th>Total Payment</th>
-                           <th>Payment Due</th>
-                           
-                           <th></th>
-                           </tr>
-                       
-                       </thead>
-                       <tbody style={{ textAlign: 'center' }}>
+                            <MDBDataTable
+                                striped
+                                bordered
+                                small
+                                data={this.state.data}
 
-                           {this.renderTransaction()}
+                            />
+                        </div>
 
-                       </tbody>
+                }
 
-                   </table>
-
-               </center>
-                   : <h4>Transaction Empty</h4>
-               }
+                <p>{this.props.linkUrl}</p>
             </div>
         )
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        role: state.user.role
+    }
+}
 
-export default withRouter(Transaction)
+export default withRouter(connect(mapStateToProps)(Transaction))

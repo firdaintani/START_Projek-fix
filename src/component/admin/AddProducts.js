@@ -3,7 +3,7 @@ import Axios from 'axios'
 import { urlApi } from '../../support/urlApi'
 import swal from 'sweetalert'
 import '../../support/css/addProduct.css'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PageNotFound from '../PageNotFound'
 
@@ -96,11 +96,11 @@ class AddProduct extends React.Component {
                        
                         swal("Success", "Product has been added", "success")
                         this.setState({ selectedFile: null })
+                        this.props.history.push('/manage-product')
                     }
 
                 })
                 .catch((err) => console.log(err))
-            // alert('isi semua')
         } else {
             swal("Warning", "Please fill all the form", "warning")
         }
@@ -214,34 +214,6 @@ class AddProduct extends React.Component {
 
                     <input type="button" className="tombol" value='ADD PRODUCT' onClick={this.addProduct} style={{ width: '100%' }}></input><br></br>
 
-                    {/* <table className='table'>
-                    <tr>
-                        <td>Product Name</td>
-                    </tr>
-                    <tr>
-                        <td>Select Brand</td>
-                    </tr>
-                    <tr>
-                        <td>Select Category</td>
-                    </tr>
-                    <tr>
-                        <td>Price</td>
-                    </tr>
-                    <tr>
-                        <td>Discount</td>
-                    </tr>
-                    <tr>
-                        <td>Stock</td>
-                    </tr>
-                    <tr>
-                        <td>Select Product Picture</td>
-                    </tr>
-                    <tr>
-
-                        <td>Product Description</td>
-                    </tr>
-                </table>
- */}
                 </div>
                 </center>
             </div>
@@ -255,4 +227,4 @@ const mapStateToProps=(state)=>{
     }
 }
 
-export default connect(mapStateToProps)(AddProduct)
+export default withRouter(connect(mapStateToProps)(AddProduct))

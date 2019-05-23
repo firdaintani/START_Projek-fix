@@ -4,12 +4,8 @@ import Loader from 'react-loader-spinner'
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import queryString from 'query-string';
-import ManageTransaction from '../admin/ManageTransaction'
 import Transaction from './Transaction'
-import FinishedTransaction from './FinishedTransaction'
 import { connect } from 'react-redux'
-import OnProcessTransaction from './OnProcessTransaction'
-import CanceledTransaction from './CanceledTransaction'
 import cookie from 'universal-cookie'
 import PageNotFound from '../PageNotFound';
 import Axios from 'axios';
@@ -168,7 +164,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '1' })}
                             onClick={() => { this.toggle('1'); }}
                         >
-                            Belum Dibayar
+                            Unpaid
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -176,7 +172,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '2' })}
                             onClick={() => { this.toggle('2'); }}
                         >
-                            Diproses
+                            Being processed
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -184,7 +180,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '3' })}
                             onClick={() => { this.toggle('3'); }}
                         >
-                            Selesai
+                            Finished
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -192,7 +188,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '4' })}
                             onClick={() => { this.toggle('4'); }}
                         >
-                            Batal
+                            Canceled/Failed
             </NavLink>
                     </NavItem>
                 </Nav>
@@ -205,18 +201,19 @@ class TabTransaction extends React.Component {
                             <TabPane tabId="1">
                                 <Row>
                                     <Col sm="12">
-                                        {
+                                        {/* {
                                             this.props.role === 'admin' ?
                                                 <ManageTransaction data={this.state.haventPay} /> : this.props.role === 'user' ?
                                                     <Transaction data={this.state.haventPay} /> : null
-                                        }
+                                        } */}
+                                        <Transaction data={this.state.haventPay} />
                                     </Col>
                                 </Row>
                             </TabPane>
                             <TabPane tabId="2">
                                 <Row>
                                     <Col sm="12">
-                                        <OnProcessTransaction data={this.state.onProcess} />
+                                        <Transaction data={this.state.onProcess} />
 
                                     </Col>
                                 </Row>
@@ -225,7 +222,7 @@ class TabTransaction extends React.Component {
                                 <Row>
                                     <Col sm="12">
 
-                                        <FinishedTransaction data={this.state.finished} />
+                                        <Transaction data={this.state.finished} />
 
                                     </Col>
                                 </Row>
@@ -233,7 +230,7 @@ class TabTransaction extends React.Component {
                             <TabPane tabId="4">
                                 <Row>
                                     <Col sm="12">
-                                        <CanceledTransaction data={this.state.canceled} />
+                                        <Transaction data={this.state.canceled} />
 
                                     </Col>
                                 </Row>

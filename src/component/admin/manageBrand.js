@@ -166,6 +166,7 @@ class ManageBrand extends React.Component{
         else{
           swal("Success!","Brand has been added", "success");
          this.mapData(res.data)
+         this.refs.inputBrand.value=''
       }
       })
     }

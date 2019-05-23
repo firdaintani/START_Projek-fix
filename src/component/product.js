@@ -17,7 +17,7 @@ class Product extends React.Component {
     }
 
     componentDidMount() {
-
+      
         this.getCategory()
         this.getBrand()
         this.getProductList()
@@ -98,7 +98,7 @@ class Product extends React.Component {
                 params: 'sortby=' + sortby
             })
         }
-
+        if(link.length>0){
         for (var i = 0; i < link.length; i++) {
             if (i === 0) {
                 newLink += '?' + link[i].params
@@ -107,6 +107,9 @@ class Product extends React.Component {
             }
         }
         return newLink
+    }
+    else return '/product/all'
+      
 
     }
 
@@ -248,6 +251,7 @@ class Product extends React.Component {
         return data
     }
     render() {
+        
         return (
             <div className='row' style={{ marginTop: '70px', paddingTop: '10px', display: "flex", alignItems: "flex-start" }}>
                 <div className='col-9' style={{ overflow: 'auto' }}>

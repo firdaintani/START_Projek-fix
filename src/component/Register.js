@@ -3,12 +3,12 @@ import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {onRegister} from '../1. action'
 import Loader from 'react-loader-spinner'
-
+import validator from 'validator';
 
 class Register extends React.Component{
     state ={message:'' }
     registerBtn=()=>{
-        alert('masuk')
+      
         var password = this.refs.reg_password.value
         var confirm_password = this.refs.reg_conf_password.value
         var name = this.refs.reg_name.value
@@ -16,6 +16,7 @@ class Register extends React.Component{
         var email = this.refs.reg_email.value
         var phone = this.refs.reg_phone.value
         if(password && confirm_password && name && username && email && phone){
+            if(validator.isEmail(email)){
             if(password===confirm_password){
            
                 var objData = {username, password,name, email,phone}
@@ -28,6 +29,9 @@ class Register extends React.Component{
               
                 this.setState({message:'Password not same'})
             }
+        }else{
+            this.setState({message:'Email must in valid format'})
+        }
     
         }
         else{

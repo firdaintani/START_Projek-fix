@@ -302,7 +302,7 @@ class ManageProduct extends React.Component {
                     <MDBModal isOpen={this.state.isEdit} toggle={this.cancelBtn} size='lg'>
                         <MDBModalHeader toggle={this.cancelBtn}>Edit Category {this.state.editItem.category_name}</MDBModalHeader>
                         <MDBModalBody>
-                            <Link to='/'><p>Home</p></Link>
+                            
                             <div className='row'>
                                 <div className='col-md-3'>
                                     <img src={'http://localhost:4000/' + this.state.editItem.product_image} width='100%' alt='product pic'></img>

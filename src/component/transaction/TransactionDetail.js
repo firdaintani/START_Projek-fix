@@ -13,7 +13,7 @@ class TransactionDetail extends React.Component {
 
     componentDidMount() {
         this.getTransactionDetail()
-        this.getAddressDetail()
+        this.getAddressPaymentDetail()
 
     }
     toggle = () => {
@@ -33,7 +33,7 @@ class TransactionDetail extends React.Component {
 
     }
 
-    getAddressDetail = () => {
+    getAddressPaymentDetail = () => {
         Axios.get(urlApi + '/transaction/address-detail/' + this.props.match.params.id)
             .then((res) => {
                 if (res.data.error) {
@@ -103,7 +103,7 @@ class TransactionDetail extends React.Component {
                             'Upload Payment Picture Success! Please wait for our confirmation',
                             'success'
                         )
-                        this.getAddressDetail()
+                        this.getAddressPaymentDetail()
                         this.getTransactionDetail()
                     }
                 })
@@ -136,7 +136,7 @@ class TransactionDetail extends React.Component {
 
     }
     cancelPayment = () => {
-        // alert(id)
+       
         var id = this.props.match.params.id
         Swal.fire({
             title: 'Please wait',
@@ -190,7 +190,7 @@ class TransactionDetail extends React.Component {
     }
 
     render() {
-        var { id, total, address, province_name, postal_code, urban, sub_district, payment_picture, city, account_name, account_number, bank_pict, status, payment_due } = this.state.addressMethod
+        var { id, total, address, province_name, postal_code, urban, sub_district, payment_picture, city, account_name, account_number, bank_pict, status, payment_due,phone } = this.state.addressMethod
         return (
             <div className="container font" style={{ marginTop: '80px' }}>
                 <center>
@@ -203,11 +203,12 @@ class TransactionDetail extends React.Component {
                         <center>
                             <table className='table'>
                                 <thead style={{ textAlign: 'center' }}>
-                                    <td colSpan={2}>Product</td>
+                                    <tr>
+                                    <th colSpan={2}>Product</th>
 
-                                    <td>Quantity</td>
-                                    <td>Total</td>
-
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    </tr>
                                 </thead>
                                 <tbody style={{ textAlign: 'center' }}>
 
@@ -235,6 +236,7 @@ class TransactionDetail extends React.Component {
 
                         <h5 style={{ marginTop: '20px' }}>DELIVERY ADDRESS</h5>
                         <p>{address + ', ' + urban + ', ' + sub_district + ', ' + city + ', ' + province_name + ', ' + postal_code}</p>
+                        <p>{phone}</p>
                         <hr></hr>
                         <h5>PAYMENT METHOD</h5>
                         <div className='row' style={{ width: '600px', alignSelf: 'center' }}>
@@ -244,8 +246,8 @@ class TransactionDetail extends React.Component {
                             </div>
                             <div className="col-md-6">
 
-                                <p>{account_name}</p>
-                                <p>{account_number} </p>
+                                <p>Account Name : {account_name}</p>
+                                <p>Account Number : {account_number} </p>
                             </div>
                         </div>
                         {
@@ -259,13 +261,13 @@ class TransactionDetail extends React.Component {
                             status === 1 ?
 
                                 <h5 style={{ color: 'red' }}>Time Left : <Countdown date={Date.now() + this.getTimes()}>
-                                    {/* <Completionist /> */}
+                                 
                                 </Countdown>
                                 </h5> : null
                         }
                         <div>
                             {
-                                payment_picture === null && this.props.role === 'user' ?
+                                payment_picture === null && this.props.role === 'user' && status!==4?
                                     <center>
 
                                         <div className="row">
@@ -300,21 +302,21 @@ class TransactionDetail extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.state.modal ?
+                {/* {this.state.modal ? */}
                     <MDBContainer>
-
                         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
                             <MDBModalHeader toggle={this.toggle}>Decline Payment</MDBModalHeader>
                             <MDBModalBody>
-                                <MDBBtn color="secondary" onClick={this.cancelPayment}>salah tf</MDBBtn>
-                                <MDBBtn color="primary" onClick={this.wrongPicture}>gambar ga jelas</MDBBtn>
+                                <p>Choose the reason : </p>
+                                <MDBBtn color="secondary" onClick={this.cancelPayment}>Wrong amount transferred</MDBBtn>
+                                <MDBBtn color="primary" onClick={this.wrongPicture}>unclear image</MDBBtn>
                             </MDBModalBody>
 
                         </MDBModal>
                     </MDBContainer>
-                    : null
+                    {/* : null */}
 
-                }
+                {/* } */}
             </div>
         )
     }
