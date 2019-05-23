@@ -52,8 +52,6 @@ export default class SwipeToSlide extends Component {
       slidesToShow: 3,
       swipeToSlide: true,
       arrows: true,
-
-
     };
     return (
       <div style={{ marginBottom: '70px', marginLeft: '70px', marginRight: '70px' }}>

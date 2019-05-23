@@ -2,8 +2,8 @@ import React from 'react'
 import queryString from 'query-string';
 import Axios from 'axios';
 import { urlApi } from '../support/urlApi';
-import swal from 'sweetalert';
-import Swal2 from 'sweetalert2'
+
+import Swal from 'sweetalert2'
 import { withRouter } from 'react-router-dom'
 import './../support/css/verifyemail.css'
 
@@ -24,7 +24,7 @@ class VerifyEmail extends React.Component {
             Axios.get(urlApi + '/user/getuser?username=' + username)
                 .then((res) => {
                     if (res.data.error) {
-                        swal.fire("Error", res.data.msg, "error")
+                        Swal.fire("Error", res.data.msg, "error")
                     }
                     else {
 
@@ -43,61 +43,59 @@ class VerifyEmail extends React.Component {
      
         var username = this.state.user.username
         var email = this.state.user.email
-        Swal2.fire({
+        Swal.fire({
             title: 'Please wait',
             onOpen: () => {
-                Swal2.showLoading()
+                Swal.showLoading()
             }
         })
 
         Axios.put(urlApi + '/resend-email', { username, email })
             .then((res) => {
                 if (res.data === 'success') {
-                    Swal2.close()
-                    swal({
+                    Swal.close()
+                    Swal.fire({
                         title: "Success!",
                         text: "Please check your email to see the code",
                         icon: "success",
                     })
 
                 } else {
-                    Swal2.close()
+                    Swal.close()
                     this.setState({ error: res.data })
                 }
             })
     }
     codeVerify = () => {
         var code = parseInt(this.refs.code_verify.value)
-        if (code !== this.state.user.code_verify) {
-            this.setState({ error: 'Wrong code. Check your email to see the code' })
-        } else {
+        var username = this.state.user.username
+        Axios.put(urlApi + '/verify', { username, code })
+            .then((res) => {
+              
+                if (res.data.error) {
 
-            var username = this.state.user.username
-
-            Axios.put(urlApi + '/verify', { username })
-                .then((res) => {
-                    if (res.data.error) {
-                        swal({
-                            title: "Error!",
-                            text: res.data.msg,
-                            icon: "error",
-                        })
-
-                    }
-                    swal({
-                        title: "Success!",
-                        text: res.data,
-                        icon: "success",
+                    Swal.fire({
+                        title: "Error!",
+                        text: res.data.msg,
+                        icon: "error",
                     })
-                        .then((value) => {
-                            this.props.history.push('/login');
-
-                        });
-
-
+                    this.setState({error : ''})
+                }else{
+                Swal.fire({
+                    title: "Success!",
+                    text: res.data,
+                    icon: "success",
                 })
-        }
+                    .then((value) => {
+                        this.props.history.push('/login');
+
+                    });
+
+                }
+            })
+            .catch((err)=>console.log(err))
     }
+    
 
 
     render() {

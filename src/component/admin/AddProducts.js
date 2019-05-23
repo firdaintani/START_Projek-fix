@@ -16,7 +16,6 @@ class AddProduct extends React.Component {
     }
 
     onChangeHandler = (event) => {
-        console.log(event.target.files[0])
         this.setState({ selectedFile: event.target.files[0] })
 
     }
@@ -172,7 +171,7 @@ class AddProduct extends React.Component {
 
                         </div>
                         <div className="col-md-9">
-                            <input type="number" className="form-border outline-none" defaultValue={0} ref='inputDiscount' />
+                            <input type="number" className="form-border outline-none" ref='inputDiscount' />
 
                         </div>
                     </div>

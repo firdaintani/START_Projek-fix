@@ -260,10 +260,7 @@ class ManageCat extends React.Component{
         small
         data={this.state.data}
       />
-{/* 
-      {
-        this.state.isEdit ? <ModalManageCat/>: null}
-      } */}
+
         { this.state.isEdit?    
       <MDBModal isOpen={this.state.isEdit} toggle={this.cancelBtn}>
       <MDBModalHeader toggle={this.cancelBtn}>Edit Category {this.state.editItem.category_name}</MDBModalHeader>

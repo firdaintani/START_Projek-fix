@@ -267,7 +267,7 @@ class TransactionDetail extends React.Component {
                         }
                         <div>
                             {
-                                payment_picture === null && this.props.role === 'user' && status!==4?
+                                this.props.role === 'user' && status===1?
                                     <center>
 
                                         <div className="row">
@@ -281,8 +281,11 @@ class TransactionDetail extends React.Component {
                                             </div>
                                         </div>
                                     </center>
-                                    : payment_picture === null && this.props.role === 'admin' ?
+                                    :  this.props.role === 'admin' && status===1 ?
                                         <p>The user has not uploaded an image</p>
+                                        :
+                                        payment_picture===null && status===4 ?
+                                        <p>No picture uploaded</p>
                                         :
                                         <center>
                                             <a href={urlApi + '/' + payment_picture} target="_blank" rel="noopener noreferrer" title={'Click to enlarge picture'}> <img alt='payment' src={urlApi + '/' + payment_picture} className='payment-proof'></img></a>
@@ -302,7 +305,6 @@ class TransactionDetail extends React.Component {
                         </div>
                     </div>
                 </div>
-                {/* {this.state.modal ? */}
                     <MDBContainer>
                         <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
                             <MDBModalHeader toggle={this.toggle}>Decline Payment</MDBModalHeader>
@@ -314,9 +316,6 @@ class TransactionDetail extends React.Component {
 
                         </MDBModal>
                     </MDBContainer>
-                    {/* : null */}
-
-                {/* } */}
             </div>
         )
     }

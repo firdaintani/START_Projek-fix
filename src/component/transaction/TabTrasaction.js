@@ -16,7 +16,7 @@ const objCookie = new cookie()
 
 class TabTransaction extends React.Component {
     state = { data: [], searchKey: '', activeTab: '1', onProcess: [], finished: [], canceled: [], haventPay: [], getData: false }
-    toggle(tab) {
+    toggle=(tab)=>{
         if (this.state.activeTab !== tab) {
             this.setState({
                 activeTab: tab
@@ -42,17 +42,13 @@ class TabTransaction extends React.Component {
 
             newLink = this.getLink()
             if (this.props.role === 'user') {
-
                 newLink += `&u=${this.props.username}`
-
             }
         }
         else {
             newLink = `/transaction/all`
             if (this.props.role === 'user') {
-
                 newLink += `?u=${this.props.username}`
-
             }
 
         }
@@ -60,12 +56,14 @@ class TabTransaction extends React.Component {
     }
 
     getDataTransaction = (link) => {
+        
         Axios.get(urlApi + link)
             .then((res) => {
                 if (res.data.error) {
                     Swal.fire('Error', res.data.msg, "error")
                 } else {
                     if (res.data.length > 0) {
+                        
                         this.filterStatus(res.data)
 
                     } else {
@@ -91,7 +89,7 @@ class TabTransaction extends React.Component {
         var canceled = dataTransaction.filter((val) => {
             return (val.status === 4)
         })
-
+        
         this.setState({ onProcess, haventPay, finished, canceled, getData: true })
     }
 
@@ -164,7 +162,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '1' })}
                             onClick={() => { this.toggle('1'); }}
                         >
-                            Unpaid
+                            Not Yet Paid
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -172,7 +170,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '2' })}
                             onClick={() => { this.toggle('2'); }}
                         >
-                            Being processed
+                            Being Processed
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -188,7 +186,7 @@ class TabTransaction extends React.Component {
                             className={classnames({ active: this.state.activeTab === '4' })}
                             onClick={() => { this.toggle('4'); }}
                         >
-                            Canceled/Failed
+                            Failed
             </NavLink>
                     </NavItem>
                 </Nav>

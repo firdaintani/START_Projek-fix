@@ -119,10 +119,10 @@ class Cart extends React.Component{
                     <td>
                         <div className='row mb-auto mt-auto d-flex align-items-center'>
                             <div className='col-4' >
-                                <img src={urlApi+'/'+val.product_image} alt='product'className='product-picture-cart'/>
+                                <img src={urlApi+'/'+val.product_image} style={{cursor:'pointer'}} alt='product'className='product-picture-cart' onClick={()=>this.props.history.push('/product-detail/'+val.product_id)}/>
                             </div>
                             <div className='col-7' >
-                                <p style={{fontStyle:'bold', fontSize:'20px'}}>{val.name}</p>
+                                <p style={{fontStyle:'bold', fontSize:'20px', cursor:'pointer'}} onClick={()=>this.props.history.push('/product-detail/'+val.product_id)}>{val.name}</p>
     
                                 {
                                     this.state.selectedId===val.id ? 

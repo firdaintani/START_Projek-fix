@@ -10,7 +10,7 @@ import SliderNewArrival from './sliderNewArrival.js'
 import Contact from './Contact.js';
 import About from './About.js'
 class Header extends React.Component{
-    // state={isLogin:false}
+   
     render(){
         return (
             <div className='container'>
@@ -26,7 +26,6 @@ class Header extends React.Component{
                             </Link></div>
                     </div>
                     <div className='col-6'>
-                        {/* <img src={gambar} style={{height:}} alt='header pict'/> */}
                         <div className="card" style={{width: '100%'}}>
                         <img className="card-img-top" src={gambar} alt="Card cap" />
                         

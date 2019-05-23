@@ -179,7 +179,7 @@ class ManageBrand extends React.Component{
   }
   return (
       <div className='container' style={{marginTop:'100px'}}>
-      {/* {this.state.data.rows.id} */}
+  
       <h3>Manage Brand</h3>
           <div className='row'>
             <div className='col-md-5'>

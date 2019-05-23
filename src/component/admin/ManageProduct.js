@@ -196,7 +196,6 @@ class ManageProduct extends React.Component {
         this.setState({ isEdit: false, editItem: null })
     }
     valueHandlerEdit = () => {
-        // return this.state.selectedFile.
         var value = this.state.selectedFileEdit ? this.state.selectedFileEdit.name : 'Pick a pict'
         return value
     }

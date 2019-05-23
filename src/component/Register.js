@@ -52,7 +52,7 @@ class Register extends React.Component{
                     width="50"
                     />
         }else{
-            return <input type="button" className="tombol" value='REGISTER' style={{marginTop:'20px'}} onClick={this.registerBtn}></input>
+            return <input type="button" className="tombol" value='REGISTER' style={{marginTop:'20px', width:'100%'}} onClick={this.registerBtn}></input>
                
         }
       

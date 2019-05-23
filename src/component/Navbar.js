@@ -46,7 +46,7 @@ class Navbar extends React.Component{
                     <li className="nav-item">
                     {
                       this.props.role==='user' ?
-                      <div className='mt-2'><p style={{display:'inline'}}>Hi,{this.props.username}!</p>
+                      <div className='mt-2'><p style={{display:'inline', cursor:'default'}}>Hi,{this.props.username}!</p>
                         <Link to='/cart'><i style={{display:'inline'}} className="fas fa-shopping-cart nav-link"><sup><span className="badge badge-danger">{this.props.cart !== 0 ? this.props.cart : null}</span></sup></i></Link> 
                         </div>: null
                   }

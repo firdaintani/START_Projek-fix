@@ -16,7 +16,7 @@ export default (state=INITIAL_STATE, action)=>{
     }else if(action.type==='REGISTER_SUCCESS'){
         return {...INITIAL_STATE,cookie:true, registered:true}
     }else if(action.type==='NOT_VERIFIED'){
-        return {...INITIAL_STATE, error:'Please verify your email first', cookie:true}
+        return {...INITIAL_STATE, error:'Please verify your account first', cookie:true}
     }else if(action.type==='CART_COUNT'){
         return {...state, cart : action.payload}
     }

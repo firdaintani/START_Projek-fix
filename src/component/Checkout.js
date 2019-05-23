@@ -19,7 +19,7 @@ class Checkout extends React.Component {
     }
 
     onBankChanged = (e) => {
-        this.setState({ idBank: e.currentTarget.value });
+        this.setState({ idBank: e.target.value });
     }
     getBank = () => {
         Axios.get(urlApi + '/transaction/bank')
