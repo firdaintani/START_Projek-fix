@@ -6,7 +6,7 @@ import Loader from 'react-loader-spinner'
 import {onLogin} from '../1. action'
 
 class Login extends React.Component{
-    state={verified:null, error: ''}
+    state={verified:null, error: '', loading : false}
 
     componentWillReceiveProps(newProps){
         this.setState({verified:newProps.verified, error:newProps.error})
@@ -15,16 +15,20 @@ class Login extends React.Component{
     onLogin=()=>{
         var username = this.refs.username.value
         var password = this.refs.password.value
-        
+        if(username && password){
        
-        this.props.onLogin(username,password)
+            this.props.onLogin(username,password)
+
+        }else{
+            this.setState({error:'Fill all'})
+        }
         
     }
 
     renderErrorMessege = () => {
-        if(this.props.error !== ""){
+        if(this.state.error !== ""){
             return <div class="alert alert-dark mt-3" role="alert">
-                        {this.props.error}
+                        {this.state.error}
             </div>
         }
     }
@@ -65,8 +69,10 @@ class Login extends React.Component{
                 {this.renderBtnOrLoading()}  
              
                 {this.renderErrorMessege()}
-                <Link to='/register'><small  className='form-text text-muted'  style={{marginTop:'10px'}}>Dont have an account?Click here</small></Link>
-                
+                <Link to='/register'><small  className='form-text text-muted'  style={{marginTop:'10px', display:'inline', float:'left'}}>Dont have an account?Click here</small></Link>
+                {/* <a href='/forgotpassword' style={{float:'right', marginTop:'10px'}}>Forgot password?</a> */}
+                <Link to='/forgotpassword'><small  className='form-text'  style={{marginTop:'10px', display:'inline', float:'right'}}>Forgot password?</small></Link>
+               
                 </form>
 
 

@@ -21,7 +21,8 @@ export const onLogin=(username,password)=>{
                 if(res.data[0].verified===0){
                     
                     dispatch({
-                        type:'NOT_VERIFIED'
+                        type:'NOT_VERIFIED',
+                        payload : res.data[0].username
                     })
                 }else{
                 dispatch({
@@ -62,6 +63,7 @@ export const keepLogin=(username)=>{
 
 export const onLogout = () => {
     objCookie.remove('username')
+    
     return {
         type : 'RESET_USER'
     }
@@ -75,9 +77,10 @@ export const onRegister=(objData,history)=>{
         Axios.post(urlApi+'/register',objData)
         .then((res)=>{
             if(res.data.error){
+            
             dispatch({
                 type:'USERNAME_NOT_AVAILABLE',
-                payload:res.data.msg
+                payload:res.data.msg.includes('email_UNIQUE') ? 'Email already registered. Try other email' : 'Username already exist. Try another username.'
 
             })
         }
@@ -125,4 +128,44 @@ export const countCart=(username)=>{
     .catch((err)=>console.log(err))
 
     }
+
+}
+
+export const countWishlist=(username)=>{
+    return (dispatch)=>{
+    
+        Axios.get(urlApi+'/wishlist/count/'+username)
+        .then((res)=>{
+            if(res.data.error){
+                swal("Error", res.data.msg, "error")
+            }else{
+                dispatch({
+                    type: 'WISHLIST_COUNT',
+                    payload : res.data[0].total
+                })
+            }
+        })
+        .catch((err)=>console.log(err))
+    
+        }
+    
+}
+
+export const getProfileImage=(username)=>{
+    return (dispatch)=>{
+    
+        Axios.get(urlApi+'/user/getpict?username='+username)
+        .then((res)=>{
+            if(res.data.error){
+                swal("Error", res.data.msg, "error")
+            }else{
+                dispatch({
+                    type: 'PROFILE_IMAGE',
+                    payload : res.data[0].profil_image
+                })
+            }
+        })
+        .catch((err)=>console.log(err))
+    
+        }
 }

@@ -28,7 +28,7 @@ div > .text-link:hover{
     content: "";
     display: block;
     position: absolute;
-    z-index: 100;
+    z-index: 99;
     top: -17px;
     bottom: -17px;
     left: 0;
@@ -41,7 +41,7 @@ div > .text-link:hover{
 .overlay-text{
     color: white;
     font-size: 20px;
-    z-index: 101;
+    z-index: 99;
     position: absolute;
     top: 50%;
     left: 50%;

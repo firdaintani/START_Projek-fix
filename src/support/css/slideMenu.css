@@ -13,3 +13,26 @@
 .menu-item:focus{
     outline: none !important;
 }
+
+.avatar-img{
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
+.username{
+    font-family: 'Playfair Display', serif;
+    font-size: 18px !important;
+    cursor: pointer;
+    color: white;
+
+   
+}
+.username:hover{
+    color: white;
+}

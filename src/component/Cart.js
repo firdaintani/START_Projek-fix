@@ -114,6 +114,7 @@ class Cart extends React.Component{
                 this.saveEdit(val.id, val.stock)
             }
             else if(val.stock > 0) {
+                
                 return (
                     <tr key={val.id}>
                     <td>
@@ -122,7 +123,7 @@ class Cart extends React.Component{
                                 <img src={urlApi+'/'+val.product_image} style={{cursor:'pointer'}} alt='product'className='product-picture-cart' onClick={()=>this.props.history.push('/product-detail/'+val.product_id)}/>
                             </div>
                             <div className='col-7' >
-                                <p style={{fontStyle:'bold', fontSize:'20px', cursor:'pointer'}} onClick={()=>this.props.history.push('/product-detail/'+val.product_id)}>{val.name}</p>
+                                <p style={{fontStyle:'bold', fontSize:'20px', cursor:'pointer'}} onClick={()=>this.props.history.push(`/product-detail/${val.product_id}`)}>{val.name}</p>
     
                                 {
                                     this.state.selectedId===val.id ? 

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, withRouter} from 'react-router-dom'
+import {Link, withRouter,Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {onRegister} from '../1. action'
 import Loader from 'react-loader-spinner'
@@ -68,6 +68,12 @@ class Register extends React.Component{
 
 
     render(){
+        if(this.props.username !== ""){
+           
+            return <Redirect to='/'/>
+        }
+
+       
         return(
             <div className='container' style={{marginTop:'50px', paddingTop:'50px'}}>
             <form style={{marginRight:'300px', marginLeft:'300px'}}>
@@ -111,12 +117,12 @@ class Register extends React.Component{
     }
 }
 
+
 const mapStateToProps=(state)=>{
     return {
-        user : state.user.username,
+        username : state.user.username,
         error : state.user.error,
-        loading : state.user.loading,
-        registered : state.user.registered
+        loading : state.user.loading
     }
 }
 

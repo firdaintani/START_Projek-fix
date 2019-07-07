@@ -147,6 +147,15 @@ class Checkout extends React.Component {
             })
             .catch((err) => console.log(err))
     }
+
+    getSpecificDate=(date)=>{
+        var dd = date.getDate();
+        var mm = date.getMonth();
+        var yyyy = date.getFullYear();
+        var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'Desember']
+        var result_date=dd + ' ' + month[mm] + ' ' + yyyy + ' ' + date.getHours() + ':' + date.getMinutes()+':'+date.getSeconds()
+        return result_date
+    }
     checkoutBtn = () => {
         if (this.state.idAddress !== 0 && this.refs.inputAddress.value !== '' && this.state.idBank > 0) {
             Swal2.fire({
@@ -155,14 +164,14 @@ class Checkout extends React.Component {
                     Swal2.showLoading()
                 }
             })
-            var dataCart = []
-            this.state.productCart.forEach((val) => {
-                if (val.stock > 0) {
-                    dataCart.push({ id: val.id, product_id: val.product_id, price: val.price, discount: val.discount, quantity: val.quantity })
-                }
-            })
-
-            var data = { username: this.props.username, total: this.getTotal(), idAddress: this.state.idAddress, address: this.refs.inputAddress.value, payment_bank: this.state.idBank, dataCart }
+            var today = new Date();
+             var order_date=this.getSpecificDate(today)
+            var due = new Date(today);
+            
+             due.setDate( due.getDate() +2 );
+            var payment_due=this.getSpecificDate(due)
+        
+            var data = { username: this.props.username, total: this.getTotal(), idAddress: this.state.idAddress, address: this.refs.inputAddress.value, payment_bank: this.state.idBank, order_date, payment_due }
             Axios.post(urlApi + '/cart/checkout', data)
                 .then((res) => {
                     if (res.data.error) {

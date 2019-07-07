@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 const objCookie = new cookie()
 
 class TabTransaction extends React.Component {
-    state = { data: [], searchKey: '', activeTab: '1', onProcess: [], finished: [], canceled: [], haventPay: [], getData: false }
+    state = { data: [], searchKey: '', activeTab: '1', onProcess: [], finished: [], canceled: [], haventPay: [], getData: false, year:[2019,2020,2021,2022,2023] }
     toggle=(tab)=>{
         if (this.state.activeTab !== tab) {
             this.setState({
@@ -27,14 +27,14 @@ class TabTransaction extends React.Component {
         this.getTransaction()
     }
 
-    getLink = () => {
-        var params = queryString.parse(this.props.location.search);
-        var newLink = '';
-        if (params.m) {
-            newLink = `/transaction/search?m=${params.m}`
-        }
-        return newLink
-    }
+    // getLink = () => {
+    //     var params = queryString.parse(this.props.location.search);
+    //     var newLink = '';
+    //     if (params.m) {
+    //         newLink = `/transaction/search?m=${params.m}`
+    //     }
+    //     return newLink
+    // }
     getTransaction = () => {
         var newLink = ''
         this.setState({ getData: false })
@@ -56,7 +56,7 @@ class TabTransaction extends React.Component {
     }
 
     getDataTransaction = (link) => {
-        
+      
         Axios.get(urlApi + link)
             .then((res) => {
                 if (res.data.error) {
@@ -93,8 +93,51 @@ class TabTransaction extends React.Component {
         this.setState({ onProcess, haventPay, finished, canceled, getData: true })
     }
 
+    link=(m,y)=>{
+        var newLink = `/transaction/search`
+        var link = []
+        if (m>0) {
+            link.push({
+                params: 'm=' + m
+
+            })
+        }
+        if (y>0) {
+            link.push({
+                params: 'y=' + y
+            })
+        
+        }
+        
+        if(link.length>0){
+        for (var i = 0; i < link.length; i++) {
+            if (i === 0) {
+                newLink += '?' + link[i].params
+            } else {
+                newLink += '&' + link[i].params
+            }
+        }
+        return newLink
+    }
+    else {
+        newLink = `/transaction/all`
+            
+        return newLink
+    }
+    }
+
+    getLink = () => {
+        var params = queryString.parse(this.props.location.search);
+        var newLink = this.link(params.m, params.y)
+        return newLink
+    }
+
     pushUrl = () => {
-        var newLink = `/transaction/search?m=${this.refs.selectMonth.value}`
+        var m= this.refs.selectMonth.value
+        var y = this.refs.selectYear.value
+
+        var newLink = this.link(m,y)
+        
         this.props.history.push(newLink)
         if (this.props.role === 'user') {
             newLink += `&u=${this.props.username}`
@@ -104,7 +147,7 @@ class TabTransaction extends React.Component {
     }
 
     filterBtn = () => {
-        if (this.refs.selectMonth.value > 0)
+        if (this.refs.selectMonth.value > 0 || this.refs.selectYear.value>0)
             this.pushUrl()
         else {
             this.props.history.push('/transaction')
@@ -140,6 +183,19 @@ class TabTransaction extends React.Component {
             </div>
         )
     }
+
+    displayYear=()=>{
+        var data = this.state.year.map((val)=>{
+            return(
+                <option value={val} >{val}</option>
+                    
+            )
+        })
+        return data
+    }
+
+  
+
     render() {
         if (objCookie.get('username') === undefined) {
             return <PageNotFound />
@@ -150,6 +206,13 @@ class TabTransaction extends React.Component {
                     <p className='mt-3'>Filter by month :</p>
                     <div className="row">
                         {this.displayMonth()}
+                        <div className="col-md-2">
+
+                            <select className='form-control' ref='selectYear'>
+                            <option value={0} >Select Year</option>
+                                {this.displayYear()}
+                            </select>
+                        </div>
                         <div className="col-md-2">
                             <input type="button" className='tombol-black' value='FILTER' onClick={this.filterBtn} />
                         </div>
@@ -204,14 +267,14 @@ class TabTransaction extends React.Component {
                                                 <ManageTransaction data={this.state.haventPay} /> : this.props.role === 'user' ?
                                                     <Transaction data={this.state.haventPay} /> : null
                                         } */}
-                                        <Transaction data={this.state.haventPay} />
+                                        <Transaction data={this.state.haventPay} title='yang Belum Membayar' />
                                     </Col>
                                 </Row>
                             </TabPane>
                             <TabPane tabId="2">
                                 <Row>
                                     <Col sm="12">
-                                        <Transaction data={this.state.onProcess} />
+                                        <Transaction data={this.state.onProcess} title='yang Sedang Diproses'/>
 
                                     </Col>
                                 </Row>
@@ -220,7 +283,7 @@ class TabTransaction extends React.Component {
                                 <Row>
                                     <Col sm="12">
 
-                                        <Transaction data={this.state.finished} />
+                                        <Transaction data={this.state.finished} title='Selesai'/>
 
                                     </Col>
                                 </Row>
@@ -228,7 +291,7 @@ class TabTransaction extends React.Component {
                             <TabPane tabId="4">
                                 <Row>
                                     <Col sm="12">
-                                        <Transaction data={this.state.canceled} />
+                                        <Transaction data={this.state.canceled} title='Batal'/>
 
                                     </Col>
                                 </Row>

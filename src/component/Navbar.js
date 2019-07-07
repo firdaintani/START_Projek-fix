@@ -6,6 +6,8 @@ import {onLogout} from '../1. action'
 import swal from 'sweetalert'
 import {withRouter} from 'react-router-dom'
 
+import DynamicToolTip from './Tooltip'
+
 class Navbar extends React.Component{
       logoutBtn=()=>{
         swal({
@@ -46,10 +48,17 @@ class Navbar extends React.Component{
                     <li className="nav-item">
                     {
                       this.props.role==='user' ?
-                      <div className='mt-2'><p style={{display:'inline', cursor:'default'}}>Hi,{this.props.username}!</p>
-                        <Link to='/cart'><i style={{display:'inline'}} className="fas fa-shopping-cart nav-link"><sup><span className="badge badge-danger">{this.props.cart !== 0 ? this.props.cart : null}</span></sup></i></Link> 
+                      <div className='mt-2'>
+                        <Link to='/profile'><p style={{display:'inline', cursor:'pointer',color:'black'}}>Hi,{this.props.username}!</p></Link>
+                        <Link to='/wishlist'><i style={{display:'inline'}} className="fas fa-heart nav-link" id='wishlist'><sup><span className="badge badge-danger">{this.props.wishlist !== 0 ? this.props.wishlist : null}</span></sup></i></Link> 
+                        <Link to='/cart'><i style={{display:'inline'}} className="fas fa-shopping-cart nav-link" id='cart'><sup><span className="badge badge-danger">{this.props.cart !== 0 ? this.props.cart : null}</span></sup></i></Link> 
+                       
+                         <DynamicToolTip textTooltip={"Wishlist"} idTooltip={"wishlist"}/>
+                  
+                  <DynamicToolTip textTooltip={"Cart"} idTooltip={"cart"}/>
                         </div>: null
                   }
+                 
                     </li>
                     <li className="nav-item">
                            { this.props.username==='' ?
@@ -76,7 +85,8 @@ const mapStateToProps=(state)=>{
     return {
       username : state.user.username,
       cart : state.user.cart,
-      role : state.user.role
+      role : state.user.role,
+      wishlist : state.wishlist.wishlist
     }
   }
   

@@ -63,7 +63,8 @@ class TransactionDetail extends React.Component {
         var data = this.state.transactionDetail.map((val) => {
             return (
                 <tr>
-                    <td><img src={urlApi + '/' + val.product_image} alt='product' style={{ width: '100px', height: '100px' }}></img></td>
+                    <td><img src={urlApi + '/' + val.product_image} alt='product' style={{
+      objectFit:'scale-down', width: '100px', height: '100px' }}></img></td>
                     <td style={{ float: 'left' }}>{val.name}</td>
                     <td>{val.qty}</td>
                     <td><Currency quantity={val.total} currency="IDR" /></td>

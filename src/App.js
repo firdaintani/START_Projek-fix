@@ -20,12 +20,17 @@ import ManageCategory from './component/admin/ManageCategory'
 import ManageBrand from './component/admin/ManageBrand'
 import ManageProduct from './component/admin/ManageProduct'
 import AddProduct from './component/admin/AddProducts'
-
+import Report from './component/Report'
+import Wishlist from './component/Wishlist'
+import Profile from './component/Profile'
+import NewPassword from './component/NewPassword'
 import cookie from 'universal-cookie'
-import { keepLogin, cookieChecked , countCart} from './1. action'
+import { keepLogin, cookieChecked , countCart, countWishlist, getProfileImage} from './1. action'
 import { connect } from 'react-redux'
 import { withRouter, Switch } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
+import ChangePassword from './component/ChangePassword';
+import ForgotPassword from './component/ForgotPassword';
 var objCookie = new cookie()
 
 
@@ -36,6 +41,9 @@ class App extends Component {
     if (username !== undefined) {
       this.props.keepLogin(username)
       this.props.countCart(username)
+      this.props.countWishlist(username)
+      
+      this.props.getProfileImage(username)
     }
     else {
       this.props.cookieChecked()
@@ -45,6 +53,8 @@ class App extends Component {
 
   componentWillReceiveProps(newProps){
     this.props.countCart(newProps.username)
+    this.props.countWishlist(newProps.username)
+    this.props.getProfileImage(newProps.username)
     
   }
   render() {
@@ -73,6 +83,13 @@ class App extends Component {
             <Route path='/transaction' component={TabTransaction} />
             <Route path='/checkout' component={Checkout} exact/>
             <Route path='/finishcheckout/:id' component={FinishCheckout} exact/>
+            <Route path='/report' component={Report} exact/>
+            <Route path='/wishlist' component={Wishlist} exact />
+            <Route path='/profile' component={Profile} exact />
+            <Route path='/changepassword' component={ChangePassword} exact />
+            <Route path='/newpassword/:email' component={NewPassword} exact />
+            <Route path='/forgotpassword' component={ForgotPassword} exact />
+            
             <Route path='*' component={PageNotFound} exact/>
             </Switch>
           </ScrollToTop>
@@ -102,4 +119,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { keepLogin, cookieChecked, countCart })(App));
+export default withRouter(connect(mapStateToProps, { keepLogin, cookieChecked, countCart, countWishlist, getProfileImage})(App));

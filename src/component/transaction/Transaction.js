@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import Currency from 'react-currency-formatter'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import Axios from 'axios';
+import { urlApi } from '../../support/urlApi';
+import Swal from 'sweetalert2';
 
 class Transaction extends React.Component {
     state = {
@@ -142,17 +145,52 @@ class Transaction extends React.Component {
         this.setState({ data: newData })
 
     }
+    downloadFile=(text,filename)=>{
+        var element = document.createElement('a');
+        element.setAttribute('href', text);
+        element.setAttribute('download', filename);
+      
+        element.style.display = 'none';
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);
+    }
+    
+    downloadBtn=()=>{
+        
+        var dataTransaction = []
+        for(var i =0;i<this.state.data.rows.length;i++){
+            dataTransaction.push({...this.state.data.rows[i], no:(i+1)})
+        }
+        var objProperty = Object.keys(this.state.data.rows[0])
+       
+       
+        var data = {title: this.props.title, dataTable : dataTransaction, tableTitle : objProperty}
+
+        Axios.post(urlApi+'/transaction/getpdf', data)
+        .then((res)=>{
+            if(res.data.error){
+                Swal.fire("error",res.data.msg,"error")
+            }else{
+                this.downloadFile(urlApi+res.data.path, `Daftar Transaksi ${this.props.title}.pdf`)
+            }
+        })
+    }
 
     render() {
        
         return (
             <div className="container" style={{ marginTop: '20px' }}>
+              
                 {
                     this.state.data.rows.length === 0 ?
                         <h4>Transaction Empty</h4> :
                         <div>
-
-
+                            <input type='button' className='tombol' value='DOWNLOAD PDF' onClick={this.downloadBtn} style={{float:'right', color:'black',marginBottom:'30px', cursor:'pointer'}}/>
+                            
+                            <div>
                             <MDBDataTable
                                 striped
                                 bordered
@@ -160,6 +198,7 @@ class Transaction extends React.Component {
                                 data={this.state.data}
 
                             />
+                            </div>
                         </div>
 
                 }
