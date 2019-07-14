@@ -188,9 +188,13 @@ class Transaction extends React.Component {
                     this.state.data.rows.length === 0 ?
                         <h4>Transaction Empty</h4> :
                         <div>
-                            <input type='button' className='tombol' value='DOWNLOAD PDF' onClick={this.downloadBtn} style={{float:'right', color:'black',marginBottom:'30px', cursor:'pointer'}}/>
+                            {/*{
+                                this.props.role==='admin' ?
+                                <input type='button' className='tombol' value='DOWNLOAD PDF' onClick={this.downloadBtn} style={{float:'right', color:'black',marginBottom:'30px', cursor:'pointer'}}/>
+                                : null
+                            } */}
                             
-                            <div>
+                            {/* <div> */}
                             <MDBDataTable
                                 striped
                                 bordered
@@ -198,7 +202,7 @@ class Transaction extends React.Component {
                                 data={this.state.data}
 
                             />
-                            </div>
+                            {/* </div> */}
                         </div>
 
                 }

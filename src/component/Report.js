@@ -37,7 +37,7 @@ class Report extends React.Component{
                             className={classnames({ active: this.state.activeTab === '1' })}
                             onClick={() => { this.toggle('1'); }}
                         >
-                            Barang yang paling sering dibeli
+                            Items that are often purchased
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -45,7 +45,7 @@ class Report extends React.Component{
                             className={classnames({ active: this.state.activeTab === '2' })}
                             onClick={() => { this.toggle('2'); }}
                         >
-                           Pengguna yang paling banyak beli
+                           Users who buy the most
             </NavLink>
                     </NavItem>
                     <NavItem>
@@ -53,7 +53,7 @@ class Report extends React.Component{
                             className={classnames({ active: this.state.activeTab === '3' })}
                             onClick={() => { this.toggle('3'); }}
                         >
-                            Pengguna yang paling sering beli
+                            Users who often buy
             </NavLink>
                     </NavItem>
                 </Nav>

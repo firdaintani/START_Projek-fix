@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 // import {withRouter} from 'react-router-dom'
 import Swal from 'sweetalert2';
 
+import {onLogout} from '../1. action'
+
 class NewPassword extends React.Component{
     state={error : ''}
     savePassword=()=>{
@@ -22,7 +24,8 @@ class NewPassword extends React.Component{
                     } else {
                         Swal.fire("success", "Password changed", "success")
                         .then((value) => {
-                            this.props.history.push('/profile')
+                            this.props.onLogout()
+                            this.props.history.push('/login')
                         });
                     }
                 })
@@ -70,4 +73,4 @@ const mapStateToProps=(state)=>{
     }
 }
 
-export default connect(mapStateToProps)(NewPassword)
+export default connect(mapStateToProps,{onLogout})(NewPassword)

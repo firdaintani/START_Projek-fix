@@ -10,7 +10,9 @@ class ForgotPassword extends React.Component {
     state = { error: '' }
 
     checkEmail = () => {
+        
         var email = this.refs.email.value
+        // alert(email)
         if (validator.isEmail(email)) {
            
             Axios.get(urlApi + '/user/checkemail?email=' + email)
@@ -34,7 +36,7 @@ class ForgotPassword extends React.Component {
                     console.log(err)
                 })
         }else{
-            
+            alert('salah')
         }
     }
 

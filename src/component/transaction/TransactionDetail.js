@@ -8,18 +8,42 @@ import '../../support/css/transactionDetail.css'
 import { connect } from 'react-redux'
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader } from 'mdbreact';
 
+import Loader from 'react-loader-spinner'
+
+
+import PageNotFound from '../PageNotFound'
+
 class TransactionDetail extends React.Component {
-    state = { transactionDetail: [], addressMethod: {}, selectedFile: null, modal: false }
+    state = { transactionDetail: [], addressMethod: {}, selectedFile: null, modal: false, existId: false, getData : false }
 
     componentDidMount() {
+        // this.checkExistId()
         this.getTransactionDetail()
         this.getAddressPaymentDetail()
+      
 
     }
     toggle = () => {
         this.setState({
             modal: !this.state.modal
         });
+    }
+
+    checkExistId=()=>{
+        var id=this.props.match.params.id
+        var username = this.props.username
+
+        Axios.get(urlApi+'/transaction/existid?id='+id+'&username='+username)
+        .then((res) => {
+            if (res.data==='true'){
+                alert(res.data)
+                this.setState({existId : true})
+            } else {
+                alert(res.data)
+                this.setState({existId : false})
+            }
+        })
+        .catch((err) => console.log(err))
     }
 
     valueHandler = () => {
@@ -39,21 +63,27 @@ class TransactionDetail extends React.Component {
                 if (res.data.error) {
                     Swal.fire("Error", res.data.msg, "error")
                 } else {
+                    if(this.state.existId){
+                        this.setState({ addressMethod: res.data[0] })
 
-                    this.setState({ addressMethod: res.data[0] })
+                    }
                 }
             })
             .catch((err) => console.log(err))
 
     }
     getTransactionDetail = () => {
-        Axios.get(urlApi + '/transaction/transaction-detail/' + this.props.match.params.id)
+        Axios.get(urlApi + '/transaction/transaction-detail?id=' + this.props.match.params.id+'&username='+this.props.username)
             .then((res) => {
                 if (res.data.error) {
                     Swal.fire("Error", res.data.msg, "error")
-                } else {
+                } else if(res.data==='id not exist'){
+                    this.setState({existId:false, getData:true})
+                }
+                
+                else{
 
-                    this.setState({ transactionDetail: res.data })
+                    this.setState({ transactionDetail: res.data, existId:true, getData:true })
                 }
             })
             .catch((err) => console.log(err))
@@ -191,7 +221,22 @@ class TransactionDetail extends React.Component {
     }
 
     render() {
-        var { id, total, address, province_name, postal_code, urban, sub_district, payment_picture, city, account_name, account_number, bank_pict, status, payment_due,phone } = this.state.addressMethod
+        if(this.state.getData===false){
+            return (<center>
+            <Loader
+                type="ThreeDots"
+                color="#000000"
+                height="300"
+                width="300"
+            />
+        </center>)
+        }
+        
+         if(this.state.existId===false ){
+            return <PageNotFound/>
+        }else{
+            var { id, total, address, province_name, postal_code, urban, sub_district, payment_picture, city, account_name, account_number, bank_pict, status, payment_due,phone } = this.state.addressMethod
+        
         return (
             <div className="container font" style={{ marginTop: '80px' }}>
                 <center>
@@ -321,10 +366,13 @@ class TransactionDetail extends React.Component {
         )
     }
 }
+        
+}
 
 const mapStateToProps = (state) => {
     return {
-        role: state.user.role
+        role: state.user.role,
+        username : state.user.username
     }
 }
 export default connect(mapStateToProps)(TransactionDetail)

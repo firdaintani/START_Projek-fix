@@ -109,7 +109,7 @@ class Wishlist extends React.Component{
     searchProduct=()=>{
         var searchkey = this.refs.search.value
 
-        Axios.get(urlApi+'/wishlist/search?s='+searchkey)
+        Axios.get(urlApi+'/wishlist/search?s='+searchkey+'&u='+this.props.username)
         .then((res)=>{
             if(res.data.error){
                 Swal.fire('error',res.data.msg,'error')

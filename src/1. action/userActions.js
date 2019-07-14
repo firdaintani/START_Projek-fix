@@ -7,7 +7,7 @@ import swal from "sweetalert";
 var objCookie = new cookie()
 
 export const onLogin=(username,password)=>{
-   return(dispatch)=>{
+   return (dispatch)=>{
     dispatch({
         type: 'LOADING',
     })

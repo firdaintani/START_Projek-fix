@@ -18,16 +18,20 @@ class Register extends React.Component{
         if(password && confirm_password && name && username && email && phone){
             if(validator.isEmail(email)){
             if(password===confirm_password){
-           
-                var objData = {username, password,name, email,phone}
-                this.props.onRegister(objData, this.props.history)
+                if(password.length<8){
+                    this.setState({message : 'password must consist of 8 character.'})
+                }else{
+                    var objData = {username, password,name, email,phone}
+                    this.props.onRegister(objData, this.props.history)
+        
+                    this.setState({message:''})
     
-                this.setState({message:''})
+                }
               
             
             }else{
               
-                this.setState({message:'Password not same'})
+                this.setState({message:'Password not match'})
             }
         }else{
             this.setState({message:'Email must in valid format'})

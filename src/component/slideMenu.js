@@ -70,7 +70,7 @@ class SlideMenu extends React.Component {
               <Link to='/profile' className='username'>{this.props.username}</Link>
              
             </div>
-              <p style={{fontSize:'14px',cursor:'default'}}>STARTPay : RP. 1000</p>
+              {/* <p style={{fontSize:'14px',cursor:'default'}}>STARTPay : RP. 1000</p> */}
             </center>
           </div> : null
           }
